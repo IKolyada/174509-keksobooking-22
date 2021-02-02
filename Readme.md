@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Инна Коляда](https://up.htmlacademy.ru/javascript/22/user/174509).
-* Наставник: [Владимир Коршунов] (https://htmlacademy.ru/profile/bekobou).
+* Наставник: [Владимир Коршунов](https://htmlacademy.ru/profile/bekobou).
 
 ---
 
