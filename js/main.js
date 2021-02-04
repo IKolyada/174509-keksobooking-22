@@ -1,27 +1,18 @@
-let generateRandomInt = (min, max) => {
-  if (min < 0 || min >= max) {
-    return alert('Введите корректный диапазон чисел');
+const generateRandomInt = (min, max) => {
+  if (min >= 0 && min < max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  throw new Error('Ошибка выполнения');
 };
-
-// формулу взяла здесь https://puzzleweb.ru/javascript/math_random.php, почему она такая разобрала)
 
 generateRandomInt();
 
-let generateRandomNum = (min, max, decimal) => {
-  if (min < 0) {
-    min = -min;
+const generateRandomNum = (min, max, decimal) => {
+  if (min >= 0 && min < max) {
+    const randomNumber = Math.random() * (max - min + 1) + min;
+    return randomNumber.toFixed(decimal);
   }
-  if (max < 0){
-    max = -max;
-  }
-  if (min >= max) {
-    max += min;
-  }
-
-  let randomNumber = Math.random() * (max - min + 1) + min;
-  return randomNumber.toFixed(decimal);
+  throw new Error('Ошибка выполнения');
 };
 
 generateRandomNum();
