@@ -151,7 +151,6 @@ const generateAds = () => {
     };
     ads.push(ad);
   }
-
   return ads;
 }
 
