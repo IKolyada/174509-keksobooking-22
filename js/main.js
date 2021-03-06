@@ -1,3 +1,10 @@
-import {generateAds} from './data.js';
+import {insertData} from './ads-generation.js';
 
-generateAds();
+insertData();
+
+
+
+
+
+
+
