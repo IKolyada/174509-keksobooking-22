@@ -1,6 +1,11 @@
-import {insertData} from './ads-generation.js';
+import {generateAds} from './data.js';
+import {createCard} from './card.js';
 
-insertData();
+const mapCanvas = document.querySelector('#map-canvas');
+const adsData = generateAds();
+
+mapCanvas.appendChild(createCard(adsData[0]));
+
 
 
 
