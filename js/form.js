@@ -8,7 +8,7 @@ const timeout = form.querySelector('#timeout');
 
 //Checktime
 
-const setTime = (time) => {
+const onChangeTime = (time) => {
   time.addEventListener('change', (evt) => {
     timein.value = evt.target.value;
     timeout.value = evt.target.value;
@@ -35,4 +35,4 @@ price.addEventListener('input', () => {
   price.reportValidity();
 })
 
-export {setTime, timein, timeout}
+export {onChangeTime, timein, timeout}
