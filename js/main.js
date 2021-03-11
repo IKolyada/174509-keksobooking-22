@@ -1,11 +1,9 @@
 import {generateAds} from './data.js';
-import {createCard} from './card.js';
-import {onChangeTime, timein, timeout} from './form.js';
+import {checkTime} from './form.js';
+import {addPins} from './map.js';
 
-const mapCanvas = document.querySelector('#map-canvas');
 const adsData = generateAds();
 
-mapCanvas.appendChild(createCard(adsData[0]));
+checkTime();
+addPins(adsData);
 
-onChangeTime(timein);
-onChangeTime(timeout);
