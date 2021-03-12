@@ -1,9 +1,14 @@
 import {MINPRICE} from './data.js';
+import {setAddress} from './map.js';
 
 const form = document.querySelector('.ad-form');
 const types = form.querySelector('#type');
 const price = form.querySelector('#price');
 const address = form.querySelector('#address');
+
+//Address
+
+setAddress(address);
 
 //Checktime
 
