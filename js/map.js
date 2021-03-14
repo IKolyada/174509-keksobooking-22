@@ -1,5 +1,3 @@
-
-import {address} from './form.js';
 import {createCard} from './card.js';
 //Map
 
@@ -64,13 +62,15 @@ const mainPin = L.marker(
 
 mainPin.addTo(map);
 
-address.value = `${mainPin._latlng.lat}, ${mainPin._latlng.lng}`;
-address.setAttribute('readonly', 'readonly');
+const setAddress = (address) => {
+  address.value = `${mainPin._latlng.lat}, ${mainPin._latlng.lng}`;
+  address.setAttribute('readonly', 'readonly');
 
-mainPin.on('moveend', (evt) => {
-  const latLng = evt.target.getLatLng();
-  address.value = `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`;
-});
+  mainPin.on('moveend', (evt) => {
+    const latLng = evt.target.getLatLng();
+    address.value = `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`;
+  });
+}
 
 //Other pins
 
@@ -104,4 +104,4 @@ const addPins = (ads) => {
   });
 }
 
-export {addPins}
+export {addPins, setAddress}
