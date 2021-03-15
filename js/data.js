@@ -3,12 +3,6 @@ import {generateRandomInt, generateRandomNum} from './util.js';
 const ACCOMMODATION = ['Palace', 'Flat', 'House', 'Bungalow'];
 const CHECKTIME = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const MINPRICE = {
-  bungalow: 0,
-  flat: 1000,
-  house: 5000,
-  palace: 10000,
-};
 
 const adsQuantity = 10;
 
@@ -66,13 +60,13 @@ const createDataAccommodation = () => {
 const generatePrice = (type) => {
   switch (type) {
     case 'Palace':
-      return generateRandomInt(MINPRICE.palace, 1000000);
+      return generateRandomInt(10000, 1000000);
     case 'Flat':
-      return generateRandomInt(MINPRICE.flat, 1000000);
+      return generateRandomInt(1000, 1000000);
     case 'House':
-      return generateRandomInt(MINPRICE.house, 1000000);
+      return generateRandomInt(5000, 1000000);
     case 'Bungalow':
-      return generateRandomInt(MINPRICE.bungalow, 1000000);
+      return generateRandomInt(0, 1000000);
   }
 };
 
@@ -144,4 +138,4 @@ const generateAds = () => {
   return ads;
 }
 
-export {generateAds, MINPRICE};
+export {generateAds};
