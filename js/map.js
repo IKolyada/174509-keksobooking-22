@@ -1,5 +1,10 @@
 import {createCard} from './card.js';
+import {setAddress} from './form.js';
+
 //Map
+
+const BASE_LAT = 35.66023;
+const BASE_LNG = 139.73007;
 
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
@@ -10,7 +15,8 @@ const disableElement = (element) => {
   for (let child of element.children) {
     child.setAttribute('disabled', 'disabled');
   }
-}
+};
+
 disableElement(form);
 disableElement(mapFilters);
 
@@ -18,7 +24,7 @@ const unblockElement = (element) => {
   for (let child of element.children) {
     child.removeAttribute('disabled');
   }
-}
+};
 
 /* global L:readonly */
 const map = L.map('map-canvas')
@@ -30,8 +36,8 @@ const map = L.map('map-canvas')
   })
 
   .setView({
-    lat: 35.70,
-    lng: 139.75,
+    lat: BASE_LAT,
+    lng: BASE_LNG,
   }, 10.4);
 
 L.tileLayer(
@@ -51,8 +57,8 @@ const mainPinIcon = L.icon({
 
 const mainPin = L.marker(
   {
-    lat: 35.66023,
-    lng: 139.73007,
+    lat: BASE_LAT,
+    lng: BASE_LNG,
   },
   {
     draggable: true,
@@ -62,15 +68,20 @@ const mainPin = L.marker(
 
 mainPin.addTo(map);
 
-const setAddress = (address) => {
-  address.value = `${mainPin._latlng.lat}, ${mainPin._latlng.lng}`;
-  address.setAttribute('readonly', 'readonly');
+setAddress(mainPin._latlng.lat, mainPin._latlng.lng);
 
-  mainPin.on('moveend', (evt) => {
-    const latLng = evt.target.getLatLng();
-    address.value = `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`;
-  });
-}
+mainPin.on('moveend', (evt) => {
+  const latLng = evt.target.getLatLng();
+  setAddress(latLng.lat.toFixed(5), latLng.lng.toFixed(5));
+});
+
+const returnMainPin = () => {
+  mainPin.remove();
+  mainPin._latlng.lat = BASE_LAT;
+  mainPin._latlng.lng = BASE_LNG;
+  mainPin.addTo(map);
+  setAddress(mainPin._latlng.lat, mainPin._latlng.lng);
+};
 
 //Other pins
 
@@ -85,8 +96,8 @@ const addPins = (ads) => {
   ads.forEach((point) => {
     const pin = L.marker(
       {
-        lat: point.location.x,
-        lng: point.location.y,
+        lat: point.location.lat,
+        lng: point.location.lng,
       },
       {
         icon: pinIcon,
@@ -102,6 +113,6 @@ const addPins = (ads) => {
         },
       );
   });
-}
+};
 
-export {addPins, setAddress}
+export {addPins, returnMainPin};

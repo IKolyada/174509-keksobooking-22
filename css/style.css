@@ -81,6 +81,7 @@ fieldset {
           flex-direction: column;
 
   overflow: hidden;
+  z-index: 1;
 }
 
 .map__canvas {

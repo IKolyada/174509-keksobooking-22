@@ -1,4 +1,5 @@
-import {setAddress} from './map.js';
+import {returnMainPin} from './map.js';
+import {sendData} from './data.js';
 
 const form = document.querySelector('.ad-form');
 const title = form.querySelector('#title');
@@ -7,6 +8,8 @@ const price = form.querySelector('#price');
 const address = form.querySelector('#address');
 const rooms = form.querySelector('#room_number');
 const capacity = form.querySelector('#capacity');
+const reset = form.querySelector('.ad-form__reset');
+
 
 const MIN_PRICE = {
   bungalow: 0,
@@ -35,7 +38,11 @@ title.addEventListener('input', () => {
 
 //Address
 
-setAddress(address);
+const setAddress = (lat, lng) => {
+  address.value = `${lat}, ${lng}`;
+}
+
+address.setAttribute('readonly', 'readonly');
 
 //Rooms and capacity
 
@@ -106,6 +113,32 @@ price.addEventListener('input', () => {
   }
 
   price.reportValidity();
-})
+});
 
-export {checkTime}
+//Reset
+
+const resetForm = () => {
+  form.reset();
+  returnMainPin();
+}
+
+reset.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForm();
+});
+
+//Send form
+
+const setFormSubmit = (onSuccess, onFail) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => onSuccess(),
+      () => onFail(),
+      new FormData(evt.target),
+    );
+  });
+};
+
+export {checkTime, setAddress, setFormSubmit, resetForm};

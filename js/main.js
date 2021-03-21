@@ -1,9 +1,10 @@
-import {generateAds} from './data.js';
-import {checkTime} from './form.js';
 import {addPins} from './map.js';
+import {getData} from './data.js';
+import {checkTime, setFormSubmit} from './form.js';
+import {showSuccessMessage, showErrorMessage} from './modal.js';
 
-const adsData = generateAds();
+getData(addPins);
 
 checkTime();
-addPins(adsData);
 
+setFormSubmit(showSuccessMessage, showErrorMessage);
