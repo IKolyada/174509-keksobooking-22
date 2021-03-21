@@ -70,4 +70,4 @@ const createCard = (({author, offer}) => {
   return adCard;
 });
 
-export {createCard}
+export {createCard};
