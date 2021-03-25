@@ -1,15 +1,6 @@
-import {returnMainPin} from './map.js';
-import {sendData} from './data.js';
-
-const form = document.querySelector('.ad-form');
-const title = form.querySelector('#title');
-const types = form.querySelector('#type');
-const price = form.querySelector('#price');
-const address = form.querySelector('#address');
-const rooms = form.querySelector('#room_number');
-const capacity = form.querySelector('#capacity');
-const reset = form.querySelector('.ad-form__reset');
-
+'use strict';
+import {addPins, returnMainPin} from './map.js';
+import {sendData} from './api.js';
 
 const MIN_PRICE = {
   bungalow: 0,
@@ -20,6 +11,16 @@ const MIN_PRICE = {
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
+
+const form = document.querySelector('.ad-form');
+const title = form.querySelector('#title');
+const types = form.querySelector('#type');
+const price = form.querySelector('#price');
+const address = form.querySelector('#address');
+const rooms = form.querySelector('#room_number');
+const capacity = form.querySelector('#capacity');
+const reset = form.querySelector('.ad-form__reset');
+const forms = document.querySelectorAll('form');
 
 //Title
 
@@ -42,7 +43,7 @@ const setAddress = (lat, lng) => {
   address.value = `${lat}, ${lng}`;
 }
 
-address.setAttribute('readonly', 'readonly');
+address.readOnly = 'readonly';
 
 //Rooms and capacity
 
@@ -89,6 +90,8 @@ const checkTime = () => {
   setTime(timeout);
 }
 
+checkTime();
+
 //Price
 
 types.addEventListener('change', (evt) => {
@@ -118,14 +121,18 @@ price.addEventListener('input', () => {
 //Reset
 
 const resetForm = () => {
-  form.reset();
+  forms.forEach(form =>  form.reset());
+  price.placeholder = MIN_PRICE.flat;
   returnMainPin();
 }
 
-reset.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  resetForm();
-});
+const clearCustomPropertyes = (ads) => {
+  reset.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetForm();
+    addPins(ads);
+  });
+}
 
 //Send form
 
@@ -141,4 +148,4 @@ const setFormSubmit = (onSuccess, onFail) => {
   });
 };
 
-export {checkTime, setAddress, setFormSubmit, resetForm};
+export {checkTime, setAddress, setFormSubmit, resetForm, clearCustomPropertyes};

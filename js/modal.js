@@ -1,3 +1,4 @@
+'use strict';
 import {resetForm} from './form.js';
 import {isEscEvent} from './util.js';
 
@@ -5,21 +6,27 @@ const main = document.querySelector('#main');
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 
+const showMessage = (message) => {
+  const listenEsc = (evt) => {
+    if (isEscEvent(evt)) {
+      evt.preventDefault();
+      main.removeChild(message);
+      document.removeEventListener('keydown', listenEsc);
+    }
+  }
+  return listenEsc;
+};
+
 //Success message
 
 const showSuccessMessage = () => {
   const successMessage = successMessageTemplate.cloneNode(true);
   main.appendChild(successMessage);
-  document.addEventListener('keydown', (evt) => {
-    if (isEscEvent(evt)) {
-      evt.preventDefault();
-      main.removeChild(successMessage);
-    }
-  });
-  resetForm();
+  document.addEventListener('keydown', showMessage(successMessage));
   successMessage.addEventListener('click', () => {
     main.removeChild(successMessage);
   });
+  resetForm();
 };
 
 //Error message
@@ -28,12 +35,7 @@ const showErrorMessage = () => {
   const errorMessage = errorMessageTemplate.cloneNode(true);
   const errorButton = errorMessage.querySelector('.error__button');
   main.appendChild(errorMessage);
-  document.addEventListener('keydown', (evt) => {
-    if (isEscEvent(evt)) {
-      evt.preventDefault();
-      main.removeChild(errorMessage);
-    }
-  });
+  document.addEventListener('keydown', showMessage(errorMessage));
   errorMessage.addEventListener('click', () => {
     main.removeChild(errorMessage);
   });
@@ -55,6 +57,5 @@ const showErrorDataMessage = () => {
     errorMessage.remove();
   }, 3000);
 };
-
 
 export {showSuccessMessage, showErrorMessage, showErrorDataMessage};

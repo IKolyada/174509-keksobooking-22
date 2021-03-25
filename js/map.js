@@ -1,5 +1,10 @@
+'use strict';
+import {getData} from './api.js';
 import {createCard} from './card.js';
-import {setAddress} from './form.js';
+import {setAddress, clearCustomPropertyes} from './form.js';
+import {watchMapFilters} from './filter.js';
+
+const ADS_COUNT = 10;
 
 //Map
 
@@ -13,7 +18,7 @@ const disableElement = (element) => {
   element.classList.add(element.classList.value + '--disabled');
 
   for (let child of element.children) {
-    child.setAttribute('disabled', 'disabled');
+    child.disabled = true;
   }
 };
 
@@ -22,17 +27,20 @@ disableElement(mapFilters);
 
 const unblockElement = (element) => {
   for (let child of element.children) {
-    child.removeAttribute('disabled');
+    child.disabled = false;
   }
+};
+
+const activateMapFilters = () => {
+  mapFilters.classList.remove('map__filters--disabled');
+  unblockElement(mapFilters);
 };
 
 /* global L:readonly */
 const map = L.map('map-canvas')
   .on('load', () => {
     form.classList.remove('ad-form--disabled');
-    mapFilters.classList.remove('map__filters--disabled');
     unblockElement(form);
-    unblockElement(mapFilters);
   })
 
   .setView({
@@ -46,6 +54,13 @@ L.tileLayer(
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
+
+getData((ads) => {
+  addPins(ads.slice(0, ADS_COUNT));
+  activateMapFilters();
+  watchMapFilters(ads);
+  clearCustomPropertyes(ads);
+});
 
 //Main pin
 
@@ -91,8 +106,10 @@ const pinIcon = L.icon({
   iconAnchor: [15, 40],
 });
 
+const layerPins = L.layerGroup();
 
 const addPins = (ads) => {
+  layerPins.clearLayers();
   ads.forEach((point) => {
     const pin = L.marker(
       {
@@ -105,7 +122,7 @@ const addPins = (ads) => {
     );
 
     pin
-      .addTo(map)
+      .addTo(layerPins)
       .bindPopup(
         createCard(point),
         {
@@ -113,6 +130,7 @@ const addPins = (ads) => {
         },
       );
   });
+  layerPins.addTo(map);
 };
 
-export {addPins, returnMainPin};
+export {addPins, returnMainPin, activateMapFilters};

@@ -1,10 +1,7 @@
-import {addPins} from './map.js';
-import {getData} from './data.js';
-import {checkTime, setFormSubmit} from './form.js';
+'use strict';
+import './map.js';
+import {setFormSubmit} from './form.js';
 import {showSuccessMessage, showErrorMessage} from './modal.js';
-
-getData(addPins);
-
-checkTime();
+import './filter.js';
 
 setFormSubmit(showSuccessMessage, showErrorMessage);
