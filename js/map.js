@@ -65,7 +65,7 @@ getData((ads) => {
 //Main pin
 
 const mainPinIcon = L.icon({
-  iconUrl: '/img/main-pin.svg',
+  iconUrl: 'img/main-pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
@@ -101,7 +101,7 @@ const returnMainPin = () => {
 //Other pins
 
 const pinIcon = L.icon({
-  iconUrl: '/img/pin.svg',
+  iconUrl: 'img/pin.svg',
   iconSize: [30, 30],
   iconAnchor: [15, 40],
 });
