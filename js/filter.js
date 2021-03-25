@@ -48,8 +48,6 @@ const filterFeatures = (ad) => {
   return compareFeatures(ad.offer.features, getValues) || getValues.length ===0;
 };
 
-//console.log(checkedFeatures);
-
 const filterAds = (ads) => {
   return ads.filter(ad =>
     filterType(ad) &&
