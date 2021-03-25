@@ -1,16 +1,17 @@
+'use strict';
 import {showErrorDataMessage} from './modal.js';
 
-const getData = (addPins) => {
+const getData = (onSuccess) => {
   fetch('https://22.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if (response.ok) {
-        response.json()
-          .then((ads) => {
-            addPins(ads);
-          });
+        return response.json()
       } else {
         showErrorDataMessage();
       }
+    })
+    .then((ads) => {
+      onSuccess(ads);
     })
     .catch(() => {
       showErrorDataMessage();

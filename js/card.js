@@ -1,15 +1,16 @@
+'use strict';
 const cardLayout = document.querySelector('#card').content.querySelector('.popup');
 
 //Type
 const translateType = (type) => {
   switch (type) {
-    case 'Palace':
+    case 'palace':
       return 'Дворец';
-    case 'Flat':
+    case 'flat':
       return 'Квартира';
-    case 'House':
+    case 'house':
       return 'Дом';
-    case 'Bungalow':
+    case 'bungalow':
       return 'Бунгало';
   }
 };
