@@ -1,7 +1,7 @@
 'use strict';
 import {getData} from './api.js';
 import {createCard} from './card.js';
-import {setAddress, clearCustomPropertyes} from './form.js';
+import {setAddress} from './form.js';
 import {watchMapFilters} from './filter.js';
 
 const ADS_COUNT = 10;
@@ -36,11 +36,24 @@ const activateMapFilters = () => {
   unblockElement(mapFilters);
 };
 
+const handleAds = (ads) => {
+  addPins(ads.slice(0, ADS_COUNT));
+  activateMapFilters();
+  watchMapFilters(ads);
+  //clearCustomProperties(ads);
+};
+
+let defaultAds;
+
 /* global L:readonly */
 const map = L.map('map-canvas')
   .on('load', () => {
     form.classList.remove('ad-form--disabled');
     unblockElement(form);
+    getData((data) => {
+      defaultAds = data;
+      handleAds(defaultAds);
+    });
   })
 
   .setView({
@@ -54,13 +67,6 @@ L.tileLayer(
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
-
-getData((ads) => {
-  addPins(ads.slice(0, ADS_COUNT));
-  activateMapFilters();
-  watchMapFilters(ads);
-  clearCustomPropertyes(ads);
-});
 
 //Main pin
 
@@ -108,6 +114,11 @@ const pinIcon = L.icon({
 
 const layerPins = L.layerGroup();
 
+const setDefaultPins = () => {
+  addPins(defaultAds);
+  returnMainPin();
+}
+
 const addPins = (ads) => {
   layerPins.clearLayers();
   ads.forEach((point) => {
@@ -133,4 +144,4 @@ const addPins = (ads) => {
   layerPins.addTo(map);
 };
 
-export {addPins, returnMainPin, activateMapFilters};
+export {addPins, returnMainPin, activateMapFilters, setDefaultPins};

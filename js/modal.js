@@ -33,13 +33,9 @@ const showSuccessMessage = () => {
 
 const showErrorMessage = () => {
   const errorMessage = errorMessageTemplate.cloneNode(true);
-  const errorButton = errorMessage.querySelector('.error__button');
   main.appendChild(errorMessage);
   document.addEventListener('keydown', showMessage(errorMessage));
   errorMessage.addEventListener('click', () => {
-    main.removeChild(errorMessage);
-  });
-  errorButton.addEventListener('click', () => {
     main.removeChild(errorMessage);
   });
 };

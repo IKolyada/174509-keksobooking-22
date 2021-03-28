@@ -1,5 +1,5 @@
 'use strict';
-import {addPins, returnMainPin} from './map.js';
+import {setDefaultPins} from './map.js';
 import {sendData} from './api.js';
 
 const MIN_PRICE = {
@@ -47,22 +47,17 @@ address.readOnly = 'readonly';
 
 //Rooms and capacity
 
-for (let guests of capacity) {
-  if (!guests.hasAttribute('selected')) {
-    guests.disabled = true;
-  }
-}
-
-rooms.addEventListener('change', (evt) => {
+const changeRooms = (evt) => {
+  const roomsQuantity = typeof evt === 'number' ? evt : evt.target.value;
   capacity.value = 1;
   for (let guests of capacity) {
     guests.disabled = false;
-    if (guests.value > evt.target.value || guests.value === '0') {
+    if (guests.value > roomsQuantity || guests.value === '0') {
       guests.disabled = true;
     }
   }
 
-  if (evt.target.value === '100') {
+  if (roomsQuantity === '100') {
     for (let guests of capacity) {
       if (guests.value === '0') {
         guests.disabled = false;
@@ -72,7 +67,12 @@ rooms.addEventListener('change', (evt) => {
       capacity.value = 0;
     }
   }
-});
+};
+
+const defaultRooms = Number(rooms.value);
+changeRooms(defaultRooms);
+
+rooms.addEventListener('change', changeRooms);
 
 //Checktime
 
@@ -123,16 +123,17 @@ price.addEventListener('input', () => {
 const resetForm = () => {
   forms.forEach(form =>  form.reset());
   price.placeholder = MIN_PRICE.flat;
-  returnMainPin();
-}
+  price.min = MIN_PRICE.flat;
+  rooms.value = defaultRooms;
+  changeRooms(defaultRooms);
+  setDefaultPins();
+};
 
-const clearCustomPropertyes = (ads) => {
-  reset.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    resetForm();
-    addPins(ads);
-  });
-}
+reset.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForm();
+});
+
 
 //Send form
 
@@ -148,4 +149,4 @@ const setFormSubmit = (onSuccess, onFail) => {
   });
 };
 
-export {checkTime, setAddress, setFormSubmit, resetForm, clearCustomPropertyes};
+export {setAddress, setFormSubmit, resetForm};
