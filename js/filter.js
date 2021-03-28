@@ -3,6 +3,9 @@
 import {addPins} from './map.js';
 
 const RERENDER_DELAY = 500;
+const LOW_PRICE = 10000;
+const HIGH_PRICE = 50000;
+const ADS_COUNT = 10;
 
 const mapFilters = document.querySelector('.map__filters');
 const type = mapFilters.querySelector('#housing-type');
@@ -19,11 +22,11 @@ const filterType = (ad) => {
 const filterPrice = (ad) => {
   switch(price.value) {
     case 'middle':
-      return ad.offer.price >= 10000 && ad.offer.price < 50000;
+      return ad.offer.price >= LOW_PRICE && ad.offer.price < HIGH_PRICE;
     case 'low':
-      return ad.offer.price < 10000;
+      return ad.offer.price < LOW_PRICE;
     case 'high':
-      return ad.offer.price >= 50000;
+      return ad.offer.price >= HIGH_PRICE;
     case 'any':
       return 'ad';
   }
@@ -45,7 +48,7 @@ const filterFeatures = (ad) => {
   const checkedFeatures = featuresList.filter(feature => feature.checked);
   const getValues = checkedFeatures.map(feature => feature.value);
 
-  return compareFeatures(ad.offer.features, getValues) || getValues.length ===0;
+  return compareFeatures(ad.offer.features, getValues) || getValues.length === 0;
 };
 
 const filterAds = (ads) => {
@@ -61,7 +64,7 @@ const filterAds = (ads) => {
 const watchMapFilters = (ads) => {
   mapFilters.addEventListener('change', _.debounce(
     () => {
-      addPins(filterAds(ads).slice(0, 10));
+      addPins(filterAds(ads).slice(0, ADS_COUNT));
     },
     RERENDER_DELAY,
   ))
